@@ -805,13 +805,20 @@
     .hub-card--ma img { object-position: 48% 78%; }
     .hub-card--trace img { object-position: 62% 38%; }
     .hub-card--armory img { object-position: 8% 12%; }
-    .hub-card--orbit img { object-position: 34% 58%; }
-    .hub-card--ai img { object-position: 50% 46%; filter: contrast(1.08) saturate(1.08); }
+    .hub-card--orbit img { object-position: 38% 78%; }
+    .hub-card--ai img { object-position: 48% 42%; filter: contrast(1.06) saturate(1.04); }
     .hub-card--ma { box-shadow: inset 0 2px 0 #c96a33; }
     .hub-card--trace { box-shadow: inset 0 2px 0 #7c5cff; }
     .hub-card--armory { box-shadow: inset 0 2px 0 #6ee7a0; }
     .hub-card--orbit { box-shadow: inset 0 2px 0 #9d68ff; }
     .hub-card--ai { box-shadow: inset 0 2px 0 #c7a862; }
+
+
+    .sa-tile--console img { object-position: 52% 42%; }
+    .sa-tile--iss img { object-position: 72% 38%; }
+    .sa-tile--night img { object-position: 42% 78%; }
+    .sa-tile--drawer img { object-position: 78% 18%; }
+    .sa-tile--bench img { object-position: 46% 40%; }
 
     .hub-flash {
       position: fixed;
@@ -1285,12 +1292,12 @@
         <span class="hub-meta"><strong>Armory</strong><em>03</em></span>
       </a>
       <a class="hub-card hub-card--orbit" href="#orbit" data-flash="#9d68ff">
-        <img src="assets/orbit/globe.png" alt="OrbitSentry globe fixture" width="640" height="400" />
+        <img src="assets/orbit/night.png" alt="Night-side Earth with a sparse satellite field" width="640" height="400" />
         <span class="hub-chip hub-chip--m1">M1</span>
         <span class="hub-meta"><strong>OrbitSentry</strong><em>04</em></span>
       </a>
       <a class="hub-card hub-card--ai" href="#ai" data-flash="#c7a862">
-        <img src="assets/harness-hub.png" alt="Harness patchbay: tools, gate, human" width="640" height="400" />
+        <img src="assets/harness/bench.png" alt="Dark operator bench, patch cables, phosphor glow" width="640" height="400" />
         <span class="hub-chip hub-chip--stack">STACK</span>
         <span class="hub-meta"><strong>Harness</strong><em>05</em></span>
       </a>
@@ -1486,9 +1493,9 @@
           </div>
         </article>
 
-        <figure class="sa-tile sa-tile--kit">
-          <img src="assets/photo-kit.png" alt="Kit catalog photograph of plate carrier and helmet" loading="lazy" decoding="async" />
-          <figcaption><span>01</span> Kit catalog</figcaption>
+        <figure class="sa-tile sa-tile--kit sa-tile--drawer">
+          <img src="assets/armory-drawer.png" alt="Sentinel Armory item drawer: Flagged L85A3, three condition photos, Return under staff gate" loading="lazy" decoding="async" />
+          <figcaption><span>01</span> Item drawer</figcaption>
         </figure>
 
         <figure class="sa-tile sa-tile--rifle">
@@ -1537,7 +1544,7 @@
 
         <div class="sa-project-proof" aria-label="Project outcomes">
           <p><strong>1 mm</strong><span>SGP4 vector tolerance</span></p>
-          <p><strong>449</strong><span>Bundled objects</span></p>
+          <p><strong>5</strong><span>Fixture TLEs / API offline</span></p>
         </div>
 
         <dl class="sa-project-meta">
@@ -1549,8 +1556,8 @@
           </div>
         </dl>
 
-        <a class="sa-project-link" href="https://joe-haylock-portfolio.pages.dev/orbitsentry/" target="_blank" rel="noreferrer">
-          View the case study
+        <a class="sa-project-link" href="https://joehaylock.github.io/orbitsentry-demo/" target="_blank" rel="noreferrer">
+          View the live console
           <span class="sa-link-arrow" aria-hidden="true"></span>
         </a>
       </div>
@@ -1565,37 +1572,27 @@
           </div>
         </article>
 
-        <figure class="sa-tile">
-          <img src="assets/orbit/console.webp" alt="OrbitSentry console poster with globe, catalogue and conjunction feed" loading="lazy" decoding="async" />
-          <figcaption><span>01</span> Console poster</figcaption>
+        <figure class="sa-tile sa-tile--console">
+          <img src="assets/orbit/live-1.png" alt="Live OrbitSentry Cesium console: Earth, five fixture satellites, API offline banner" loading="lazy" decoding="async" />
+          <figcaption><span>01</span> Live console</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-tile--globe">
-          <img src="assets/orbit/globe.png" alt="OrbitSentry globe fixture from the console poster, not a live globe" loading="lazy" decoding="async" />
-          <figcaption><span>02</span> Globe fixture</figcaption>
+        <figure class="sa-tile sa-tile--iss">
+          <img src="assets/orbit/live-2.png" alt="ISS selected on the live console, cyan orbit track, element age 1449 h in red" loading="lazy" decoding="async" />
+          <figcaption><span>02</span> ISS / stale TLE</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-inst sa-conj-card">
-          <p class="sa-inst-kicker">Miss distance / with uncertainty</p>
-          <div class="sa-conj-row">
-            <span class="sa-watch">WATCH</span>
-            <strong>IRIDIUM 33 DEB x FENGYUN 1C DEB</strong>
-            <em>10.26 +/- 9.89 km</em>
-          </div>
-          <div class="sa-conj-row">
-            <span class="sa-watch">WATCH</span>
-            <strong>IRIDIUM 33 DEB x COSMOS 2251 DEB</strong>
-            <em>18.49 +/- 4.30 km</em>
-          </div>
-          <figcaption><span>03</span> Conjunctions</figcaption>
+        <figure class="sa-tile sa-tile--night sa-tile--wide">
+          <img src="assets/orbit/night.png" alt="Night-side Earth from orbit, sparse satellites, no HUD" loading="lazy" decoding="async" />
+          <figcaption><span>03</span> Night side</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-inst sa-fixture-card sa-tile--wide">
+        <figure class="sa-tile sa-inst sa-fixture-card">
           <p class="sa-inst-kicker">Snapshot / not SSA official</p>
           <div class="sa-fix-stack">
             <p class="sa-fix-banner">API OFFLINE</p>
-            <p class="sa-fix-read">BUNDLED 449</p>
-            <p class="sa-fix-read">NOT SSA OFFICIAL</p>
+            <p class="sa-fix-read">5 TLE FIXTURE</p>
+            <p class="sa-fix-read">AGE 1449 H</p>
           </div>
           <figcaption><span>04</span> Fixture</figcaption>
         </figure>
@@ -1636,11 +1633,16 @@
         <article class="sa-tile sa-title-card">
           <p>Operator stack</p>
           <div>
-            <p>No product URL</p>
+            <p>How the work actually runs</p>
             <strong>HARNESS</strong>
             <span>SuperGrok / Hermes / Kimi / MCP</span>
           </div>
         </article>
+
+        <figure class="sa-tile sa-tile--bench">
+          <img src="assets/harness/bench.png" alt="Operator bench at night: patch cables, rack, phosphor glow" loading="lazy" decoding="async" />
+          <figcaption><span>01</span> Bench</figcaption>
+        </figure>
 
         <figure class="sa-tile sa-inst sa-patch-card">
           <p class="sa-inst-kicker">Patchbay / MCP</p>
@@ -1653,14 +1655,6 @@
           </div>
           <p class="sa-bay-note">SuperGrok / Hermes / Kimi / MCP</p>
           <figcaption>Patch</figcaption>
-        </figure>
-
-        <figure class="sa-tile sa-inst sa-meter-card">
-          <p class="sa-inst-kicker">Tokens</p>
-          <p class="sa-meter-label">SPEND ON THE JOB</p>
-          <div class="sa-meter" role="img" aria-label="One chat spend"><span></span></div>
-          <p class="sa-meter-read">ONE CHAT</p>
-          <figcaption>Spend</figcaption>
         </figure>
 
         <figure class="sa-tile sa-inst sa-plate-card">
