@@ -180,6 +180,7 @@
       --sa-meta-bar: var(--sa-phosphor);
       --sa-link-focus: var(--sa-phosphor);
       --sa-wash: rgba(8, 40, 28, 0.34);
+      --tile-frame: rgba(154, 171, 186, 0.5);
       scroll-margin-top: 0;
       position: relative;
       height: 220svh;
@@ -205,6 +206,7 @@
       --sa-meta-bar: #6ee7a0;
       --sa-link-focus: #6ee7a0;
       --sa-wash: rgba(8, 40, 28, 0.34);
+      --tile-frame: rgba(110, 231, 160, 0.42);
     }
 
     .deck--ma {
@@ -224,6 +226,7 @@
       --sa-meta-bar: #0d0d0b;
       --sa-link-focus: #0d0d0b;
       --sa-wash: rgba(97, 31, 9, 0.26);
+      --tile-frame: rgba(201, 106, 51, 0.55);
     }
 
     .deck--trace {
@@ -243,6 +246,7 @@
       --sa-meta-bar: #7c5cff;
       --sa-link-focus: #7c5cff;
       --sa-wash: rgba(124, 92, 255, 0.22);
+      --tile-frame: rgba(124, 92, 255, 0.62);
     }
 
     .deck--orbit {
@@ -262,6 +266,7 @@
       --sa-meta-bar: #9d68ff;
       --sa-link-focus: #9d68ff;
       --sa-wash: rgba(157, 104, 255, 0.2);
+      --tile-frame: rgba(157, 104, 255, 0.55);
     }
 
     .deck--ai {
@@ -281,6 +286,7 @@
       --sa-meta-bar: #c7a862;
       --sa-link-focus: #c7a862;
       --sa-wash: rgba(80, 60, 20, 0.28);
+      --tile-frame: rgba(199, 168, 98, 0.7);
     }
 
     .sa-project-sticky {
@@ -538,9 +544,10 @@
       position: relative;
       overflow: hidden;
       margin: 0;
-      border: 0.5rem solid var(--sa-cream);
-      background: var(--sa-cream);
-      color: var(--sa-ink);
+      border: 1px solid var(--tile-frame);
+      background: #0c0c0b;
+      color: var(--sa-cream);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
     }
 
     .sa-tile img {
@@ -556,18 +563,73 @@
 
     .sa-tile figcaption {
       position: absolute;
-      right: 0.65rem;
-      bottom: 0.65rem;
-      left: 0.65rem;
+      z-index: 2;
+      right: 0.55rem;
+      bottom: 0.55rem;
+      left: 0.55rem;
       display: flex;
       justify-content: space-between;
-      padding: 0.48rem 0.62rem;
+      padding: 0.4rem 0.5rem;
       background: rgba(12, 18, 16, 0.88);
       color: var(--sa-cream);
-      font-size: 0.68rem;
+      font-size: 0.62rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+
+    .deck--ma figure.sa-tile:not(.sa-inst) {
+      border: 0.55rem solid #f3efe6;
+      border-bottom-width: 0;
+      background: #f3efe6;
+      color: #1a120c;
+      box-shadow:
+        0 1px 0 rgba(255, 252, 245, 0.5) inset,
+        0 18px 36px rgba(0, 0, 0, 0.48),
+        0 4px 10px rgba(0, 0, 0, 0.26);
+    }
+
+    .deck--ma figure.sa-tile:not(.sa-inst) img {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 1.7rem;
+      width: 100%;
+      height: calc(100% - 1.7rem);
+      object-fit: cover;
+    }
+
+    .deck--ma figure.sa-tile:not(.sa-inst) figcaption {
+      position: absolute;
+      z-index: 2;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 1.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.2rem 0.12rem;
+      background: transparent;
+      color: #24160f;
+      font-family: var(--font-text);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: none;
+    }
+
+    .deck--ma figure.sa-tile:not(.sa-inst) figcaption span {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #7a4a2a;
+    }
+
+    .deck--ma .sa-tile--site-home img {
+      object-position: 88% 70%;
     }
 
     .sa-title-card {
@@ -575,7 +637,7 @@
       flex-direction: column;
       justify-content: space-between;
       padding: clamp(1.2rem, 2vw, 2rem);
-      border-color: var(--sa-ink);
+      border-color: var(--tile-frame);
       background: var(--sa-ink);
       color: var(--sa-cream);
     }
@@ -613,8 +675,9 @@
       display: flex;
       flex-direction: column;
       padding: clamp(1.5rem, 2.5vw, 2.7rem);
-      border-color: var(--sa-cream);
-      background: var(--sa-cream);
+      border-color: var(--tile-frame);
+      background: #0c0c0b;
+      color: var(--sa-cream);
     }
 
     .sa-system-card p {
@@ -762,8 +825,8 @@
     .sa-inst {
       display: flex;
       flex-direction: column;
-      padding: 0.8rem 0.8rem 2.55rem;
-      border-color: var(--sa-cream);
+      padding: 0.8rem 0.8rem 2.15rem;
+      border-color: var(--tile-frame);
       background: #0c0c0b;
       color: var(--sa-cream);
       font-family: var(--font-mono);
@@ -1261,7 +1324,7 @@
         </a>
       </div>
 
-      <div class="sa-media-wall" aria-label="Mountain Ash website and project imagery">
+      <div class="sa-media-wall" aria-label="Mountain Ash job photography">
         <article class="sa-tile sa-title-card">
           <img src="assets/ma/logo.png" alt="Mountain Ash Construction" />
           <div>
@@ -1271,14 +1334,14 @@
           </div>
         </article>
 
-        <figure class="sa-tile">
-          <img src="assets/ma/site-home.webp" alt="Mountain Ash live website homepage" loading="lazy" decoding="async" />
-          <figcaption><span>01</span> Live homepage</figcaption>
+        <figure class="sa-tile sa-tile--site-home">
+          <img src="assets/ma/site-home.webp" alt="Brick house and extension on a Mountain Ash job" loading="lazy" decoding="async" />
+          <figcaption><span>01</span> Brick house</figcaption>
         </figure>
 
         <figure class="sa-tile">
           <img src="assets/ma/extension-shell.webp" alt="Brick extension shell under construction" loading="lazy" decoding="async" />
-          <figcaption><span>02</span> Build evidence</figcaption>
+          <figcaption><span>02</span> Extension shell</figcaption>
         </figure>
 
         <figure class="sa-tile sa-inst sa-code-card">
@@ -1302,12 +1365,12 @@
 
         <figure class="sa-tile">
           <img src="assets/ma/flint-wall.webp" alt="Hampshire brick and flint wall on a live Mountain Ash job" loading="lazy" decoding="async" />
-          <figcaption><span>03</span> Flint</figcaption>
+          <figcaption><span>03</span> Flint wall</figcaption>
         </figure>
 
         <figure class="sa-tile">
-          <img src="assets/ma/site-work.webp" alt="Mountain Ash selected work page" loading="lazy" decoding="async" />
-          <figcaption><span>04</span> Work page</figcaption>
+          <img src="assets/ma/hero.webp" alt="Builders on site at a Mountain Ash extension" loading="lazy" decoding="async" />
+          <figcaption><span>04</span> On site</figcaption>
         </figure>
       </div>
 
