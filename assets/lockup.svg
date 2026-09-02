@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 72" role="img" aria-label="Sentinel Armory lockup">
+  <rect width="640" height="72" fill="none"/>
+  <text x="0" y="52" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="36" font-weight="700" letter-spacing="6" fill="#d7e4dc">SENTINEL</text>
+  <rect x="292" y="18" width="22" height="36" fill="#6ee7a0"/>
+  <text x="328" y="52" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="36" font-weight="700" letter-spacing="6" fill="#9aabba">ARMORY</text>
+</svg>

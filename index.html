@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Joe Haylock / lab</title>
+  <meta name="description" content="Lab case panels: Mountain Ash, TRACE, Sentinel Armory, OrbitSentry, and the agentic harness. Same pin-and-scatter mechanic. ASCII copy." />
+  <link rel="canonical" href="https://joehaylock.github.io/lab/" />
+  <link rel="preconnect" href="https://fonts.bunny.net" />
+  <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:600,700|ibm-plex-mono:500,600|source-sans-3:400,600,700" rel="stylesheet" />
+  <style>
+    :root {
+      --font-display: "Bricolage Grotesque", "Segoe UI", sans-serif;
+      --font-text: "Source Sans 3", "Segoe UI", sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+      --text-label: 0.68rem;
+      --text-display-sm: clamp(1.05rem, 1.4vw, 1.2rem);
+      --tracking-label: 0.14em;
+      --page-bg: #070a09;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html, body { margin: 0; }
+    html { background: var(--page-bg); scroll-behavior: smooth; }
+    body {
+      min-height: 100svh;
+      background: var(--page-bg);
+      color: #eef2ee;
+      font-family: var(--font-text);
+    }
+
+    .page-bar, .page-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem clamp(1rem, 3vw, 1.8rem);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(238, 242, 238, 0.62);
+    }
+    .page-bar p { margin: 0; }
+    .page-bar nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem 1.15rem;
+      justify-content: flex-end;
+    }
+    .page-bar a, .page-foot a {
+      color: #9aabba;
+      text-decoration: none;
+    }
+    .page-bar a:hover, .page-foot a:hover { color: #6ee7a0; }
+    .page-bar span { color: #6ee7a0; }
+
+    /* ---- gallery hub: dense, tactical, not flying-cards ---- */
+    .hub {
+      padding: 1.15rem clamp(1rem, 3vw, 1.8rem) 1.6rem;
+      border-bottom: 1px solid rgba(238, 242, 238, 0.1);
+    }
+    .hub-bar {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+    }
+    .hub-index, .hub-note {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .hub-index { color: #6ee7a0; }
+    .hub-note { color: rgba(238, 242, 238, 0.5); }
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    .hub-card {
+      position: relative;
+      display: block;
+      min-height: 9.5rem;
+      overflow: hidden;
+      border: 1px solid rgba(238, 242, 238, 0.16);
+      background: #0c0f0e;
+      color: inherit;
+      text-decoration: none;
+    }
+    .hub-card img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 9.5rem;
+      object-fit: cover;
+      filter: contrast(1.1) saturate(1.04);
+      transition: filter 180ms ease, transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hub-card:hover img, .hub-card:focus-visible img {
+      filter: none;
+      transform: scale(1.03);
+    }
+    .hub-card:focus-visible {
+      outline: 2px solid #6ee7a0;
+      outline-offset: 2px;
+    }
+    .hub-card--mark {
+      background: #0e0d0b;
+    }
+    .hub-card--mark img {
+      object-fit: contain;
+      filter: none;
+      min-height: 9.5rem;
+      padding: 0.7rem;
+    }
+    .hub-chip {
+      position: absolute;
+      z-index: 2;
+      top: 0.45rem;
+      left: 0.45rem;
+      padding: 0.22rem 0.42rem;
+      border: 1px solid rgba(238, 242, 238, 0.28);
+      background: rgba(7, 10, 9, 0.82);
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #eef2ee;
+    }
+    .hub-chip--live { color: #6ee7a0; border-color: rgba(110, 231, 160, 0.45); }
+    .hub-chip--syn { color: #a08cff; border-color: rgba(124, 92, 255, 0.45); }
+    .hub-chip--lab { color: #9aabba; border-color: rgba(154, 171, 186, 0.45); }
+    .hub-chip--m1 { color: #e0a64d; border-color: rgba(224, 166, 77, 0.45); }
+    .hub-chip--stack { color: #c7a862; border-color: rgba(199, 168, 98, 0.45); }
+    .hub-meta {
+      position: absolute;
+      z-index: 2;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 0.4rem;
+      padding: 1.6rem 0.5rem 0.45rem;
+      background: linear-gradient(to top, rgba(7, 10, 9, 0.94) 0%, rgba(7, 10, 9, 0.0) 100%);
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #eef2ee;
+    }
+    .hub-meta em {
+      font-style: normal;
+      color: rgba(238, 242, 238, 0.45);
+    }
+
+    /* ---- shared deck geometry (Armory mechanic) ---- */
+    .deck,
+    .sa-project {
+      --ma-progress: 0;
+      --ma-reveal: 1;
+      --wall-x: 5%;
+      --wall-y: -43%;
+      --sa-title-end: var(--sa-phosphor);
+      --sa-proof: var(--sa-phosphor);
+      --sa-meta-val: var(--sa-steel);
+      --sa-meta-hover: #f4fff8;
+      --sa-client: #f4fff8;
+      --sa-stack-rule: rgba(154, 171, 186, 0.55);
+      --sa-meta-bar: var(--sa-phosphor);
+      --sa-link-focus: var(--sa-phosphor);
+      --sa-wash: rgba(8, 40, 28, 0.34);
+      scroll-margin-top: 0;
+      position: relative;
+      height: 220svh;
+      background: transparent;
+      color: var(--sa-cream);
+    }
+
+    .sa-project,
+    .deck--armory {
+      --sa-rail: #1a2e28;
+      --sa-rail-edge: rgba(46, 90, 72, 0.94);
+      --sa-phosphor: #6ee7a0;
+      --sa-phosphor-dark: #1f6b45;
+      --sa-steel: #9aabba;
+      --sa-ink: #0c1210;
+      --sa-cream: #eef2ee;
+      --sa-title-end: #6ee7a0;
+      --sa-proof: #6ee7a0;
+      --sa-meta-val: #9aabba;
+      --sa-meta-hover: #f4fff8;
+      --sa-client: #f4fff8;
+      --sa-stack-rule: rgba(154, 171, 186, 0.55);
+      --sa-meta-bar: #6ee7a0;
+      --sa-link-focus: #6ee7a0;
+      --sa-wash: rgba(8, 40, 28, 0.34);
+    }
+
+    .deck--ma {
+      --sa-rail: #c96a33;
+      --sa-rail-edge: rgba(201, 106, 51, 0.94);
+      --sa-phosphor: #c96a33;
+      --sa-phosphor-dark: #9f461f;
+      --sa-steel: #170b07;
+      --sa-ink: #0d0d0b;
+      --sa-cream: #f4f2ec;
+      --sa-title-end: #0d0d0b;
+      --sa-proof: #0d0d0b;
+      --sa-meta-val: #170b07;
+      --sa-meta-hover: #fff8f2;
+      --sa-client: #fff8f2;
+      --sa-stack-rule: rgba(23, 11, 7, 0.38);
+      --sa-meta-bar: #0d0d0b;
+      --sa-link-focus: #0d0d0b;
+      --sa-wash: rgba(97, 31, 9, 0.26);
+    }
+
+    .deck--trace {
+      --sa-rail: #16122a;
+      --sa-rail-edge: rgba(124, 92, 255, 0.88);
+      --sa-phosphor: #5ec8c0;
+      --sa-phosphor-dark: #3a8f8a;
+      --sa-steel: #a08cff;
+      --sa-ink: #08080a;
+      --sa-cream: #eaeaf0;
+      --sa-title-end: #7c5cff;
+      --sa-proof: #7c5cff;
+      --sa-meta-val: #a08cff;
+      --sa-meta-hover: #f0eeff;
+      --sa-client: #eaeaf0;
+      --sa-stack-rule: rgba(160, 140, 255, 0.55);
+      --sa-meta-bar: #7c5cff;
+      --sa-link-focus: #7c5cff;
+      --sa-wash: rgba(124, 92, 255, 0.22);
+    }
+
+    .deck--orbit {
+      --sa-rail: #12101c;
+      --sa-rail-edge: rgba(157, 104, 255, 0.88);
+      --sa-phosphor: #9d68ff;
+      --sa-phosphor-dark: #6b3fd4;
+      --sa-steel: #b7a2ff;
+      --sa-ink: #0a0d12;
+      --sa-cream: #f1eee5;
+      --sa-title-end: #e0a64d;
+      --sa-proof: #9d68ff;
+      --sa-meta-val: #b7a2ff;
+      --sa-meta-hover: #fff8ee;
+      --sa-client: #f1eee5;
+      --sa-stack-rule: rgba(183, 162, 255, 0.5);
+      --sa-meta-bar: #9d68ff;
+      --sa-link-focus: #9d68ff;
+      --sa-wash: rgba(157, 104, 255, 0.2);
+    }
+
+    .deck--ai {
+      --sa-rail: #1c1812;
+      --sa-rail-edge: rgba(199, 168, 98, 0.9);
+      --sa-phosphor: #c7a862;
+      --sa-phosphor-dark: #8a6e32;
+      --sa-steel: #cfc6b4;
+      --sa-ink: #0e0d0b;
+      --sa-cream: #f3efe6;
+      --sa-title-end: #c7a862;
+      --sa-proof: #c7a862;
+      --sa-meta-val: #cfc6b4;
+      --sa-meta-hover: #fff8ee;
+      --sa-client: #f3efe6;
+      --sa-stack-rule: rgba(199, 168, 98, 0.5);
+      --sa-meta-bar: #c7a862;
+      --sa-link-focus: #c7a862;
+      --sa-wash: rgba(80, 60, 20, 0.28);
+    }
+
+    .sa-project-sticky {
+      position: sticky;
+      top: 0;
+      min-height: 100svh;
+      overflow: hidden;
+      isolation: isolate;
+      background: transparent;
+    }
+
+    .sa-project-sticky::after {
+      position: absolute;
+      z-index: 6;
+      inset: 0;
+      background:
+        linear-gradient(90deg, var(--sa-wash), transparent 34%),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.18), transparent 18%, transparent 84%, rgba(0, 0, 0, 0.22));
+      content: '';
+      opacity: var(--ma-reveal);
+      mask-image: linear-gradient(to bottom, transparent 0, black 10%, black 90%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .sa-project-sticky::before {
+      position: absolute;
+      z-index: 5;
+      inset: 0 auto 0 0;
+      width: 37vw;
+      background: linear-gradient(90deg, var(--sa-rail) 0 88%, var(--sa-rail-edge) 95%, transparent 100%);
+      content: '';
+      opacity: var(--ma-reveal);
+      mask-image: linear-gradient(to bottom, transparent 0, black 8%, black 92%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .sa-project-info {
+      position: absolute;
+      z-index: 8;
+      top: clamp(2rem, 5vw, 4.5rem);
+      bottom: clamp(2rem, 5vw, 4.5rem);
+      left: clamp(1.25rem, 4vw, 4.5rem);
+      display: flex;
+      width: min(26rem, 29vw);
+      flex-direction: column;
+      opacity: var(--ma-reveal);
+    }
+
+    .sa-project-index {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: var(--text-label);
+      font-weight: 600;
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--sa-steel);
+    }
+    .deck--ma .sa-project-index { color: var(--sa-cream); }
+
+    .sa-project-info h2 {
+      margin: clamp(2.5rem, 8vh, 7rem) 0 0;
+      font-family: var(--font-display);
+      font-size: clamp(3.4rem, 5.1vw, 5.8rem);
+      font-weight: 600;
+      line-height: 0.72;
+      letter-spacing: -0.04em;
+    }
+
+    .sa-project-info h2 span { display: block; }
+    .sa-project-info h2 span:last-child { color: var(--sa-title-end); }
+
+    .sa-project-summary {
+      max-width: 32ch;
+      margin: clamp(1.6rem, 3vh, 2.4rem) 0 0;
+      font-family: var(--font-text);
+      font-size: var(--text-display-sm);
+      font-weight: 400;
+      line-height: 1.35;
+      letter-spacing: -0.025em;
+    }
+
+    .sa-project-proof {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+      margin-top: clamp(1.5rem, 3vh, 2.5rem);
+      padding-block: 1rem;
+      border-block: 1px solid rgba(238, 242, 238, 0.42);
+    }
+
+    .sa-project-proof p {
+      display: grid;
+      gap: 0.18rem;
+      margin: 0;
+    }
+
+    .sa-project-proof strong {
+      color: var(--sa-proof);
+      font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+      line-height: 1;
+      letter-spacing: -0.035em;
+    }
+
+    .sa-project-proof span {
+      color: rgba(238, 242, 238, 0.78);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .sa-project-meta {
+      display: grid;
+      gap: 0;
+      margin: auto 0 1.7rem;
+      border-top: 1px solid rgba(238, 242, 238, 0.42);
+      font-size: 0.78rem;
+      line-height: 1.28;
+    }
+
+    .sa-project-meta div {
+      position: relative;
+      display: grid;
+      grid-template-columns: 4.3rem 1fr;
+      gap: 0.75rem;
+      align-items: start;
+      padding: 0.78rem 0.2rem 0.78rem 0;
+      border-bottom: 1px solid rgba(238, 242, 238, 0.28);
+      transition: background-color 180ms ease;
+    }
+
+    .sa-project-meta div::after {
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      width: 0;
+      height: 1px;
+      background: var(--sa-meta-bar);
+      content: '';
+      transition: width 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .sa-project-meta div:hover { background: rgba(238, 242, 238, 0.06); }
+    .sa-project-meta div:hover::after { width: 100%; }
+
+    .sa-project-meta dt {
+      color: rgba(238, 242, 238, 0.68);
+      font-size: 0.62rem;
+      font-weight: 750;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .sa-project-meta dd {
+      margin: 0;
+      color: var(--sa-meta-val);
+      font-size: clamp(0.82rem, 1vw, 0.95rem);
+      font-weight: 720;
+      letter-spacing: -0.015em;
+      transition: color 180ms ease, transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .sa-project-meta div:hover dd {
+      color: var(--sa-meta-hover);
+      transform: translateX(0.28rem);
+    }
+
+    .sa-meta-row--client dd {
+      color: var(--sa-client);
+      letter-spacing: 0.015em;
+    }
+
+    .sa-meta-row--role dd {
+      max-width: 28ch;
+      line-height: 1.25;
+    }
+
+    .sa-meta-row--stack dd {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.28rem 0.85rem;
+    }
+
+    .sa-meta-row--stack span {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.12rem;
+    }
+
+    .sa-meta-row--stack span::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 1px;
+      background: var(--sa-stack-rule);
+      content: '';
+    }
+
+    .sa-project-link {
+      display: flex;
+      width: fit-content;
+      min-height: 2.75rem;
+      align-items: center;
+      gap: 1.4rem;
+      justify-content: space-between;
+      padding: 0.7rem 1rem;
+      border: 1px solid rgba(238, 242, 238, 0.72);
+      border-radius: 999px;
+      color: var(--sa-cream);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .sa-project-link:hover,
+    .sa-project-link:focus-visible {
+      background: var(--sa-cream);
+      color: var(--sa-ink);
+    }
+
+    .sa-project-link:focus-visible {
+      outline: 3px solid var(--sa-link-focus);
+      outline-offset: 3px;
+    }
+
+    .sa-link-arrow {
+      display: inline-block;
+      width: 0.48em;
+      height: 0.48em;
+      margin-left: 0.35em;
+      border-right: 1.5px solid currentColor;
+      border-top: 1.5px solid currentColor;
+      transform: rotate(45deg) translateY(-0.05em);
+    }
+
+    .sa-media-wall {
+      position: absolute;
+      z-index: 3;
+      top: 50%;
+      left: 38vw;
+      display: grid;
+      width: min(68rem, 72vw);
+      grid-template-columns: repeat(2, minmax(17rem, 1fr));
+      grid-auto-rows: clamp(17rem, 33vh, 22rem);
+      gap: calc(1.2rem - var(--ma-progress) * 0.35rem);
+      transform: translate3d(var(--wall-x), var(--wall-y), 0) rotate(-4.5deg);
+      transform-origin: 50% 50%;
+      opacity: var(--ma-reveal);
+      will-change: transform, gap;
+    }
+
+    .sa-tile {
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      border: 0.5rem solid var(--sa-cream);
+      background: var(--sa-cream);
+      color: var(--sa-ink);
+    }
+
+    .sa-tile img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sa-tile--rifle img {
+      object-position: 18% 38%;
+    }
+
+    .sa-tile figcaption {
+      position: absolute;
+      right: 0.65rem;
+      bottom: 0.65rem;
+      left: 0.65rem;
+      display: flex;
+      justify-content: space-between;
+      padding: 0.48rem 0.62rem;
+      background: rgba(12, 18, 16, 0.88);
+      color: var(--sa-cream);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .sa-title-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(1.2rem, 2vw, 2rem);
+      border-color: var(--sa-ink);
+      background: var(--sa-ink);
+      color: var(--sa-cream);
+    }
+
+    .sa-title-card > img {
+      width: min(16rem, 88%);
+      height: auto;
+      object-fit: contain;
+      object-position: left top;
+    }
+
+    .sa-title-card p,
+    .sa-title-card span {
+      display: block;
+      margin: 0;
+      color: rgba(238, 242, 238, 0.7);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .sa-title-card strong {
+      display: block;
+      margin: 0.65rem 0 0.8rem;
+      color: var(--sa-cream);
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 4.2vw, 4.8rem);
+      font-weight: 650;
+      line-height: 0.76;
+      letter-spacing: -0.04em;
+    }
+
+    .sa-system-card {
+      display: flex;
+      flex-direction: column;
+      padding: clamp(1.5rem, 2.5vw, 2.7rem);
+      border-color: var(--sa-cream);
+      background: var(--sa-cream);
+    }
+
+    .sa-system-card p {
+      margin: 0;
+      color: var(--sa-phosphor-dark);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .sa-system-card strong {
+      margin: auto 0 0;
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 5.2vw, 5.6rem);
+      line-height: 0.8;
+      letter-spacing: -0.04em;
+    }
+
+    .sa-system-card span {
+      max-width: 30ch;
+      margin-top: 1.2rem;
+      font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .sa-system-card i {
+      position: absolute;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      width: 4rem;
+      height: 4rem;
+      border: 1px solid var(--sa-phosphor-dark);
+      border-radius: 50%;
+    }
+
+    .sa-system-card i::before,
+    .sa-system-card i::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background: var(--sa-phosphor-dark);
+      content: '';
+      transform: translate(-50%, -50%);
+    }
+
+    .sa-system-card i::before { width: 1px; height: 5.5rem; }
+    .sa-system-card i::after { width: 5.5rem; height: 1px; }
+
+    .sa-system-card--compact strong {
+      font-size: clamp(2.1rem, 3.4vw, 3.4rem);
+      line-height: 0.86;
+    }
+
+    .sa-tile--cctv::after {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(110, 231, 160, 0.07) 0 1px,
+          transparent 1px 4px
+        );
+      content: '';
+      mix-blend-mode: screen;
+      animation: sa-scan 2.8s linear infinite;
+      pointer-events: none;
+    }
+
+    .sa-tile--cctv .sa-rec {
+      position: absolute;
+      top: 0.7rem;
+      left: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.28rem 0.5rem;
+      background: rgba(12, 18, 16, 0.82);
+      color: var(--sa-phosphor);
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    .sa-tile--cctv .sa-rec::before {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: #e24b4b;
+      content: '';
+      animation: sa-blink 1.2s steps(2, end) infinite;
+    }
+
+    .sa-tile--wide {
+      grid-column: span 2;
+    }
+
+    .sa-scroll-note {
+      position: absolute;
+      z-index: 9;
+      right: 1.2rem;
+      bottom: 1.5rem;
+      margin: 0;
+      color: rgba(238, 242, 238, 0.78);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      opacity: var(--ma-reveal);
+    }
+
+    @keyframes sa-scan {
+      from { background-position: 0 0; }
+      to { background-position: 0 12px; }
+    }
+
+    @keyframes sa-blink {
+      50% { opacity: 0.15; }
+    }
+
+
+    .hub-card--ma img { object-position: 48% 78%; }
+    .hub-card--trace img { object-position: 62% 38%; }
+    .hub-card--armory img { object-position: 8% 12%; }
+    .hub-card--orbit img { object-position: 34% 58%; }
+    .hub-card--ai img { object-position: 50% 46%; filter: contrast(1.08) saturate(1.08); }
+    .hub-card--ma { box-shadow: inset 0 2px 0 #c96a33; }
+    .hub-card--trace { box-shadow: inset 0 2px 0 #7c5cff; }
+    .hub-card--armory { box-shadow: inset 0 2px 0 #6ee7a0; }
+    .hub-card--orbit { box-shadow: inset 0 2px 0 #9d68ff; }
+    .hub-card--ai { box-shadow: inset 0 2px 0 #c7a862; }
+
+    .hub-flash {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: #c96a33;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .sa-inst {
+      display: flex;
+      flex-direction: column;
+      padding: 0.8rem 0.8rem 2.55rem;
+      border-color: var(--sa-cream);
+      background: #0c0c0b;
+      color: var(--sa-cream);
+      font-family: var(--font-mono);
+    }
+    .sa-inst-kicker {
+      margin: 0 0 0.65rem;
+      color: var(--sa-phosphor);
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .sa-code-card {
+      background: #0a0a09;
+    }
+    .sa-code-card pre {
+      margin: 0;
+      padding: 0.15rem 0 0 0.75rem;
+      overflow: hidden;
+      border-left: 2px solid var(--sa-phosphor);
+      color: #cfd6ce;
+      font-family: var(--font-mono);
+      font-size: clamp(0.52rem, 0.82vw, 0.68rem);
+      font-weight: 500;
+      line-height: 1.48;
+      white-space: pre;
+    }
+    .sa-code-card .cmt { color: var(--sa-phosphor); }
+    .sa-code-card .str { color: #f0d9b8; }
+    .sa-code-card .key { color: #9aabba; }
+
+    .sa-grade-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      flex: 1;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .sa-grade-list li {
+      display: grid;
+      grid-template-columns: 1.6rem minmax(0, 1fr) auto;
+      gap: 0.4rem;
+      align-items: center;
+      padding: 0.34rem 0.42rem;
+      border: 1px solid rgba(238, 242, 238, 0.12);
+      background: rgba(10, 10, 16, 0.72);
+    }
+    .sa-grade-list .sid {
+      color: rgba(238, 242, 238, 0.42);
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .sa-grade-list .src {
+      overflow: hidden;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .chip {
+      min-width: 2.15rem;
+      padding: 0.12rem 0.4rem;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+    .chip-a2 { color: #5ec8c0; background: rgba(94, 200, 192, 0.12); }
+    .chip-b2 { color: #8aa8ff; background: rgba(138, 168, 255, 0.12); }
+    .chip-b3 { color: #a08cff; background: rgba(160, 140, 255, 0.14); }
+    .chip-c3 { color: #e0a64d; background: rgba(224, 166, 77, 0.14); }
+
+    .sa-gate-card .sa-stamp {
+      width: fit-content;
+      margin: 0.35rem 0 0.85rem;
+      padding: 0.38rem 0.55rem;
+      border: 2px solid #e24b4b;
+      color: #e24b4b;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transform: rotate(-7deg);
+    }
+    .sa-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+      margin-top: auto;
+    }
+    .sa-btn {
+      display: block;
+      padding: 0.52rem 0.7rem;
+      border: 1.5px solid currentColor;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .sa-btn--ok { color: #6ee7a0; }
+    .sa-btn--edit { color: #9aabba; }
+    .sa-btn--no { color: #e24b4b; }
+
+    .sa-conj-row {
+      display: grid;
+      gap: 0.22rem;
+      margin: 0 0 0.5rem;
+      padding: 0.65rem 0.7rem;
+      border: 1px solid rgba(224, 166, 77, 0.38);
+      background: rgba(12, 10, 18, 0.92);
+    }
+    .sa-watch {
+      width: fit-content;
+      padding: 0.1rem 0.38rem;
+      background: #e0a64d;
+      color: #120e08;
+      font-size: 0.52rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+    .sa-conj-row strong {
+      color: #f1eee5;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .sa-conj-row em {
+      color: #e0a64d;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-style: normal;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .sa-fixture-card.sa-tile--wide {
+      justify-content: space-between;
+    }
+    .sa-fix-stack {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr 1.15fr;
+      gap: 0.55rem;
+      margin-top: auto;
+    }
+    .sa-fix-banner,
+    .sa-fix-read {
+      margin: 0;
+      padding: 0.85rem 0.7rem;
+      font-size: clamp(0.82rem, 1.35vw, 1.15rem);
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .sa-fix-banner {
+      background: #e0a64d;
+      color: #120e08;
+    }
+    .sa-fix-read {
+      border: 1px solid #e0a64d;
+      color: #e0a64d;
+      background: #141018;
+    }
+
+    .sa-tile--globe img { object-position: 50% 45%; }
+
+    .sa-bay {
+      display: grid;
+      grid-template-columns: 1fr 0.7rem 1fr 0.7rem 1fr;
+      align-items: center;
+      margin: auto 0 0.3rem;
+      padding: 0.7rem 0.45rem 0.55rem;
+      border: 1px solid rgba(199, 168, 98, 0.42);
+      background: #14110c;
+    }
+    .sa-port {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.38rem;
+      min-width: 0;
+    }
+    .sa-jack {
+      position: relative;
+      width: 1.85rem;
+      height: 1.85rem;
+      border: 3px solid #c7a862;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, #080706 0 26%, #2a2418 28% 46%, #080706 48% 68%, #c7a862 70% 76%, #080706 78%);
+      box-shadow: 0 0 14px rgba(199, 168, 98, 0.55), inset 0 0 0 2px #0a0908;
+    }
+    .sa-jack::after {
+      position: absolute;
+      top: -0.48rem;
+      right: -0.12rem;
+      width: 0.38rem;
+      height: 0.38rem;
+      border-radius: 50%;
+      background: #e8d9a0;
+      box-shadow: 0 0 8px #c7a862;
+      content: '';
+    }
+    .sa-port b {
+      color: #c7a862;
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+    }
+    .sa-lead {
+      flex: 1;
+      height: 2px;
+      margin-bottom: 1.15rem;
+      background: linear-gradient(90deg, #c7a862, rgba(199, 168, 98, 0.18), #c7a862);
+      box-shadow: 0 0 6px rgba(199, 168, 98, 0.35);
+    }
+    .sa-bay-note {
+      margin: 0.4rem 0 0;
+      color: rgba(199, 168, 98, 0.72);
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .sa-meter-label {
+      margin: 0.15rem 0 0.7rem;
+      color: #c7a862;
+      font-family: var(--font-display);
+      font-size: clamp(0.98rem, 1.55vw, 1.35rem);
+      font-weight: 650;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+    .sa-meter {
+      position: relative;
+      height: 0.72rem;
+      margin-top: auto;
+      border: 1px solid #c7a862;
+      background: #161410;
+    }
+    .sa-meter span {
+      display: block;
+      width: 34%;
+      height: 100%;
+      background: linear-gradient(90deg, #8a6e32, #e8d9a0);
+      box-shadow: 0 0 10px rgba(199, 168, 98, 0.45);
+    }
+    .sa-meter-read {
+      margin: 0.55rem 0 0;
+      color: #c7a862;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+    }
+
+    .sa-plate {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      margin-top: 0.2rem;
+      padding: 0.9rem 0.7rem;
+      border: 2px solid #c7a862;
+      background:
+        repeating-linear-gradient(-45deg, #161410 0 10px, #1c1812 10px 20px);
+      box-shadow: inset 0 0 0 4px #0e0d0b;
+      text-align: center;
+    }
+    .sa-plate p {
+      margin: 0 0 0.55rem;
+      color: rgba(199, 168, 98, 0.7);
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+    }
+    .sa-plate strong {
+      display: block;
+      color: #c7a862;
+      font-family: var(--font-display);
+      font-size: clamp(1.15rem, 2.1vw, 1.8rem);
+      font-weight: 650;
+      line-height: 0.92;
+      letter-spacing: 0.08em;
+    }
+
+    .sa-rocker-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: auto;
+      padding: 0.9rem 0.7rem;
+      border: 1px solid rgba(199, 168, 98, 0.45);
+      background: #161410;
+    }
+    .sa-rocker-wrap > span {
+      color: #c7a862;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .sa-rocker {
+      position: relative;
+      width: 5.2rem;
+      height: 2.2rem;
+      border: 2px solid #c7a862;
+      background: #0a0908;
+      box-shadow: inset 0 0 0 1px #3a3224;
+    }
+    .sa-rocker i {
+      position: absolute;
+      top: 0.16rem;
+      left: 0.16rem;
+      width: 2.35rem;
+      height: 1.7rem;
+      background: linear-gradient(180deg, #e8d9a0, #8a6e32);
+      box-shadow: 0 0 8px rgba(199, 168, 98, 0.45);
+    }
+
+    .sa-tile--cctv .sa-rec--clock {
+      left: auto;
+      right: 0.7rem;
+      color: var(--sa-steel);
+    }
+    .sa-cctv-frame {
+      position: absolute;
+      inset: 0.55rem;
+      z-index: 1;
+      pointer-events: none;
+      box-shadow:
+        inset 14px 14px 0 -12px rgba(110, 231, 160, 0.55),
+        inset -14px 14px 0 -12px rgba(110, 231, 160, 0.55),
+        inset 14px -14px 0 -12px rgba(110, 231, 160, 0.55),
+        inset -14px -14px 0 -12px rgba(110, 231, 160, 0.55);
+    }
+
+    @media (max-width: 64rem) {
+      .hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hub-card:last-child { grid-column: span 2; }
+
+      .deck, .sa-project { height: auto; }
+
+      .sa-project-sticky {
+        position: relative;
+        min-height: auto;
+        padding: 4rem 1rem;
+      }
+
+      .sa-project-sticky::before { display: none; }
+
+      .sa-project-info {
+        position: relative;
+        inset: auto;
+        width: min(42rem, 100%);
+      }
+
+      .sa-project-info h2 {
+        margin-top: 2.5rem;
+        font-size: clamp(3.4rem, 16vw, 6rem);
+      }
+
+      .sa-project-summary { margin-top: 2rem; }
+      .sa-project-meta { margin: 2.5rem 0 1.7rem; }
+
+      .sa-media-wall {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        margin-top: 4rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: minmax(18rem, 48vw);
+        transform: none;
+        will-change: auto;
+      }
+
+      .sa-tile--wide { grid-column: span 2; }
+      .sa-tile { transform: none; }
+      .sa-scroll-note { display: none; }
+    }
+
+    @media (max-width: 38rem) {
+      .page-bar, .page-foot { flex-direction: column; align-items: flex-start; }
+      .hub-bar { flex-direction: column; gap: 0.35rem; }
+      .hub-grid { grid-template-columns: 1fr; }
+      .hub-card:last-child { grid-column: auto; }
+      .sa-media-wall {
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(17rem, 78vw);
+      }
+      .sa-tile--wide { grid-column: auto; }
+      .sa-project-meta div { grid-template-columns: 3.8rem 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .deck, .sa-project { height: auto; }
+      .sa-project-sticky {
+        position: relative;
+        min-height: auto;
+      }
+      .sa-media-wall,
+      .sa-tile {
+        transform: none !important;
+        will-change: auto;
+      }
+      .sa-tile--cctv::after,
+      .sa-tile--cctv .sa-rec::before {
+        animation: none;
+      }
+      .hub-card img { transition: none; }
+      .hub-flash { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-bar">
+    <p>Joe Haylock <span>/</span> lab</p>
+    <nav aria-label="Lab links">
+      <a href="#gallery">Gallery</a>
+      <a href="https://joehaylock.github.io/sentinel-armory/">Live Armory</a>
+      <a href="https://github.com/JoeHaylock/lab">GitHub lab</a>
+    </nav>
+  </header>
+
+  <section class="hub" id="gallery" aria-label="Lab gallery">
+    <div class="hub-bar">
+      <p class="hub-index">Index / 05 decks</p>
+      <p class="hub-note">Click a card / open that deck</p>
+    </div>
+    <nav class="hub-grid" aria-label="Case panels">
+      <a class="hub-card hub-card--ma" href="#ma" data-flash="#c96a33">
+        <img src="assets/ma/site-home.webp" alt="Mountain Ash live homepage" width="640" height="400" />
+        <span class="hub-chip hub-chip--live">LIVE</span>
+        <span class="hub-meta"><strong>Mountain Ash</strong><em>01</em></span>
+      </a>
+      <a class="hub-card hub-card--trace" href="#trace" data-flash="#7c5cff">
+        <img src="assets/trace/run.png" alt="TRACE completed canned run" width="640" height="400" />
+        <span class="hub-chip hub-chip--syn">SYNTHETIC</span>
+        <span class="hub-meta"><strong>TRACE</strong><em>02</em></span>
+      </a>
+      <a class="hub-card hub-card--armory" href="#armory" data-flash="#2f6b52">
+        <img src="assets/ui-ops-hub.png" alt="Sentinel Armory ops board vitals" width="640" height="400" />
+        <span class="hub-chip hub-chip--lab">LAB</span>
+        <span class="hub-meta"><strong>Armory</strong><em>03</em></span>
+      </a>
+      <a class="hub-card hub-card--orbit" href="#orbit" data-flash="#9d68ff">
+        <img src="assets/orbit/globe.png" alt="OrbitSentry globe fixture" width="640" height="400" />
+        <span class="hub-chip hub-chip--m1">M1</span>
+        <span class="hub-meta"><strong>OrbitSentry</strong><em>04</em></span>
+      </a>
+      <a class="hub-card hub-card--ai" href="#ai" data-flash="#c7a862">
+        <img src="assets/harness-hub.png" alt="Harness patchbay: tools, gate, human" width="640" height="400" />
+        <span class="hub-chip hub-chip--stack">STACK</span>
+        <span class="hub-meta"><strong>Harness</strong><em>05</em></span>
+      </a>
+    </nav>
+  </section>
+
+  <section id="ma" class="deck deck--ma" data-deck aria-labelledby="ma-project-title">
+    <div class="sa-project-sticky">
+      <div class="sa-project-info">
+        <p class="sa-project-index">Selected work / 01</p>
+        <h2 id="ma-project-title"><span>Mountain</span><span>Ash</span></h2>
+        <p class="sa-project-summary">A live commercial build designed around one source of truth, so the site can grow without drifting apart.</p>
+
+        <div class="sa-project-proof" aria-label="Project outcomes">
+          <p><strong>&pound;3k</strong><span>Commercial contract</span></p>
+          <p><strong>Live</strong><span>Cloudflare Pages</span></p>
+        </div>
+
+        <dl class="sa-project-meta">
+          <div class="sa-meta-row sa-meta-row--client"><dt>Client</dt><dd>MOUNTAIN ASH CONSTRUCTION LTD</dd></div>
+          <div class="sa-meta-row sa-meta-row--role"><dt>Role</dt><dd>Product design / Front-end architecture / Development</dd></div>
+          <div class="sa-meta-row sa-meta-row--stack">
+            <dt>Stack</dt>
+            <dd><span>Astro</span><span>TypeScript</span><span>Cloudflare Pages</span></dd>
+          </div>
+        </dl>
+
+        <a class="sa-project-link" href="https://maconstruct.co.uk/" target="_blank" rel="noreferrer">
+          View the live site
+          <span class="sa-link-arrow" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="sa-media-wall" aria-label="Mountain Ash website and project imagery">
+        <article class="sa-tile sa-title-card">
+          <img src="assets/ma/logo.png" alt="Mountain Ash Construction" />
+          <div>
+            <p>Live commercial build</p>
+            <strong>Mountain<br />Ash</strong>
+            <span>Astro / TypeScript / 2026</span>
+          </div>
+        </article>
+
+        <figure class="sa-tile">
+          <img src="assets/ma/site-home.webp" alt="Mountain Ash live website homepage" loading="lazy" decoding="async" />
+          <figcaption><span>01</span> Live homepage</figcaption>
+        </figure>
+
+        <figure class="sa-tile">
+          <img src="assets/ma/extension-shell.webp" alt="Brick extension shell under construction" loading="lazy" decoding="async" />
+          <figcaption><span>02</span> Build evidence</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-inst sa-code-card">
+          <p class="sa-inst-kicker">src / data</p>
+          <pre><code><span class="cmt">// site.ts / one source of truth</span>
+<span class="key">export const</span> client = {
+  name: <span class="str">"Mountain Ash Construction Ltd"</span>,
+  live: <span class="str">"maconstruct.co.uk"</span>,
+};
+<span class="key">export const</span> nav = [
+  { href: <span class="str">"/"</span>, label: <span class="str">"Home"</span> },
+  { href: <span class="str">"/work"</span>, label: <span class="str">"Work"</span> },
+  { href: <span class="str">"/services"</span>, label: <span class="str">"Services"</span> },
+  { href: <span class="str">"/contact"</span>, label: <span class="str">"Contact"</span> },
+];
+<span class="key">export const</span> routes = {
+  home: <span class="str">"/"</span>, work: <span class="str">"/work"</span>,
+};</code></pre>
+          <figcaption>site.ts</figcaption>
+        </figure>
+
+        <figure class="sa-tile">
+          <img src="assets/ma/flint-wall.webp" alt="Hampshire brick and flint wall on a live Mountain Ash job" loading="lazy" decoding="async" />
+          <figcaption><span>03</span> Flint</figcaption>
+        </figure>
+
+        <figure class="sa-tile">
+          <img src="assets/ma/site-work.webp" alt="Mountain Ash selected work page" loading="lazy" decoding="async" />
+          <figcaption><span>04</span> Work page</figcaption>
+        </figure>
+      </div>
+
+      <p class="sa-scroll-note" aria-hidden="true">Scroll to inspect</p>
+    </div>
+  </section>
+
+  <section id="trace" class="deck deck--trace" data-deck aria-labelledby="trace-project-title">
+    <div class="sa-project-sticky">
+      <div class="sa-project-info">
+        <p class="sa-project-index">Selected work / 02</p>
+        <h2 id="trace-project-title"><span>TRACE</span><span>Gate</span></h2>
+        <p class="sa-project-summary">A synthetic canned analyst workflow that grades sources, exposes contradictions and stops at human review.</p>
+
+        <div class="sa-project-proof" aria-label="Project outcomes">
+          <p><strong>8</strong><span>Stages / tasking to review</span></p>
+          <p><strong>Demo</strong><span>Synthetic / canned</span></p>
+        </div>
+
+        <dl class="sa-project-meta">
+          <div class="sa-meta-row sa-meta-row--client"><dt>Client</dt><dd>Portfolio lab / Joe Haylock</dd></div>
+          <div class="sa-meta-row sa-meta-row--role"><dt>Role</dt><dd>Product design / Responsible AI demo</dd></div>
+          <div class="sa-meta-row sa-meta-row--stack">
+            <dt>Stack</dt>
+            <dd><span>JavaScript</span><span>CSS</span><span>SVG</span><span>Synthetic data</span></dd>
+          </div>
+        </dl>
+
+        <a class="sa-project-link" href="https://joe-haylock-portfolio.pages.dev/trace/" target="_blank" rel="noreferrer">
+          View the demo
+          <span class="sa-link-arrow" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="sa-media-wall" aria-label="TRACE case panel imagery">
+        <article class="sa-tile sa-title-card">
+          <p>Canned analyst loop</p>
+          <div>
+            <p>Case panel / not the product</p>
+            <strong>TRACE</strong>
+            <span>JavaScript / CSS / SVG / 2026</span>
+          </div>
+        </article>
+
+        <figure class="sa-tile">
+          <img src="assets/trace/run.png" alt="TRACE completed canned run with eight stages, graded sources, 72 of 100, and ACCEPT EDIT REJECT" loading="lazy" decoding="async" />
+          <figcaption><span>01</span> Completed run</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-inst sa-grade-card">
+          <p class="sa-inst-kicker">Source grading / Admiralty</p>
+          <ol class="sa-grade-list">
+            <li><span class="sid">S1</span><span class="src">REGISTRY</span><span class="chip chip-a2">A2</span></li>
+            <li><span class="sid">S2</span><span class="src">CRT.SH</span><span class="chip chip-a2">A2</span></li>
+            <li><span class="sid">S3</span><span class="src">PASSIVE DNS</span><span class="chip chip-b2">B2</span></li>
+            <li><span class="sid">S4</span><span class="src">REPUTATION</span><span class="chip chip-b3">B3</span></li>
+            <li><span class="sid">S5</span><span class="src">WEB SEARCH</span><span class="chip chip-c3">C3</span></li>
+            <li><span class="sid">S6</span><span class="src">STRING</span><span class="chip chip-a2">A2</span></li>
+          </ol>
+          <figcaption><span>02</span> Grade</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-inst sa-gate-card">
+          <p class="sa-inst-kicker">Analyst decision required</p>
+          <p class="sa-stamp">AI NEVER DECIDES</p>
+          <div class="sa-btns" aria-hidden="true">
+            <span class="sa-btn sa-btn--ok">ACCEPT</span>
+            <span class="sa-btn sa-btn--edit">EDIT</span>
+            <span class="sa-btn sa-btn--no">REJECT</span>
+          </div>
+          <figcaption><span>03</span> Human gate</figcaption>
+        </figure>
+      </div>
+
+      <p class="sa-scroll-note" aria-hidden="true">Scroll to inspect</p>
+    </div>
+  </section>
+
+  <section id="armory" class="deck deck--armory sa-project" data-deck data-sa-project aria-labelledby="sa-project-title">
+    <div class="sa-project-sticky">
+      <div class="sa-project-info">
+        <p class="sa-project-index">Selected work / 03</p>
+        <h2 id="sa-project-title"><span>Sentinel</span><span>Armory</span></h2>
+        <p class="sa-project-summary">Kit &amp; firearm inventory ops demo with a simulated AI-assisted check, CCTV cage still, catalog and issue records.</p>
+
+        <div class="sa-project-proof" aria-label="Project outcomes">
+          <p><strong>Live</strong><span>GitHub Pages</span></p>
+          <p><strong>Vite</strong><span>React 19</span></p>
+        </div>
+
+        <dl class="sa-project-meta">
+          <div class="sa-meta-row sa-meta-row--client"><dt>Client</dt><dd>Portfolio lab / Joe Haylock</dd></div>
+          <div class="sa-meta-row sa-meta-row--role"><dt>Role</dt><dd>Product design / Front-end / Demo</dd></div>
+          <div class="sa-meta-row sa-meta-row--stack">
+            <dt>Stack</dt>
+            <dd><span>Vite</span><span>React 19</span><span>GitHub Pages</span></dd>
+          </div>
+        </dl>
+
+        <a class="sa-project-link" href="https://joehaylock.github.io/sentinel-armory/" target="_blank" rel="noreferrer">
+          View the live site
+          <span class="sa-link-arrow" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="sa-media-wall" aria-label="Sentinel Armory website and project imagery">
+        <article class="sa-tile sa-title-card">
+          <img src="assets/lockup.svg" alt="Sentinel Armory lockup" />
+          <div>
+            <p>Ops demo / inventory</p>
+            <strong>Sentinel<br />Armory</strong>
+            <span>Vite / React 19 / 2026</span>
+          </div>
+        </article>
+
+        <figure class="sa-tile sa-tile--kit">
+          <img src="assets/photo-kit.png" alt="Kit catalog photograph of plate carrier and helmet" loading="lazy" decoding="async" />
+          <figcaption><span>01</span> Kit catalog</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-tile--rifle">
+          <img src="assets/ui-ops.png?v=dark" alt="Sentinel Armory ops board: vitals, CCTV, transaction log, rack matrix" loading="lazy" decoding="async" />
+          <figcaption><span>02</span> Ops board</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-inst sa-code-card">
+          <p class="sa-inst-kicker">client / ops model</p>
+          <pre><code><span class="cmt">// ops.js / Vite app, not a site.ts config</span>
+<span class="key">export const</span> rack = {
+  vault: <span class="str">"B"</span>,
+  cage: 3,
+  slots: 24,
+};
+<span class="key">export function</span> requestMove(asset, dest) {
+  <span class="cmt">// simulated check / never auto-issues</span>
+  return { status: <span class="str">"pending"</span>, gate: <span class="str">"human"</span> };
+}
+<span class="key">export const</span> check = {
+  mode: <span class="str">"sim"</span>,
+  autoIssue: false,
+};</code></pre>
+          <figcaption>ops.js</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-tile--cctv sa-tile--wide">
+          <img src="assets/cage-cctv-still.png" alt="CCTV still of Vault B cage 3, ops-board view" loading="lazy" decoding="async" />
+          <span class="sa-cctv-frame" aria-hidden="true"></span>
+          <span class="sa-rec">REC / CAM 03 / VAULT B</span>
+          <span class="sa-rec sa-rec--clock">00:14:22</span>
+          <figcaption><span>03</span> Cage CCTV</figcaption>
+        </figure>
+      </div>
+
+      <p class="sa-scroll-note" aria-hidden="true">Scroll to inspect</p>
+    </div>
+  </section>
+
+  <section id="orbit" class="deck deck--orbit" data-deck aria-labelledby="orbit-project-title">
+    <div class="sa-project-sticky">
+      <div class="sa-project-info">
+        <p class="sa-project-index">Selected work / 04</p>
+        <h2 id="orbit-project-title"><span>Orbit</span><span>Sentry</span></h2>
+        <p class="sa-project-summary">A browser console that tracks a curated satellite catalogue and screens it for close approaches, manoeuvres and reentries, built so every number can be defended.</p>
+
+        <div class="sa-project-proof" aria-label="Project outcomes">
+          <p><strong>1 mm</strong><span>SGP4 vector tolerance</span></p>
+          <p><strong>449</strong><span>Bundled objects</span></p>
+        </div>
+
+        <dl class="sa-project-meta">
+          <div class="sa-meta-row sa-meta-row--client"><dt>Status</dt><dd>Private repo / M1 / not SSA official</dd></div>
+          <div class="sa-meta-row sa-meta-row--role"><dt>Role</dt><dd>Domain research / orbital maths / console</dd></div>
+          <div class="sa-meta-row sa-meta-row--stack">
+            <dt>Stack</dt>
+            <dd><span>Python</span><span>FastAPI</span><span>TypeScript</span><span>WebGL</span></dd>
+          </div>
+        </dl>
+
+        <a class="sa-project-link" href="https://joe-haylock-portfolio.pages.dev/orbitsentry/" target="_blank" rel="noreferrer">
+          View the case study
+          <span class="sa-link-arrow" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="sa-media-wall" aria-label="OrbitSentry case panel imagery">
+        <article class="sa-tile sa-title-card">
+          <p>Space domain awareness</p>
+          <div>
+            <p>Personal research / M1</p>
+            <strong>Orbit<br />Sentry</strong>
+            <span>Python / FastAPI / WebGL / 2026</span>
+          </div>
+        </article>
+
+        <figure class="sa-tile">
+          <img src="assets/orbit/console.webp" alt="OrbitSentry console poster with globe, catalogue and conjunction feed" loading="lazy" decoding="async" />
+          <figcaption><span>01</span> Console poster</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-tile--globe">
+          <img src="assets/orbit/globe.png" alt="OrbitSentry globe fixture from the console poster, not a live globe" loading="lazy" decoding="async" />
+          <figcaption><span>02</span> Globe fixture</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-inst sa-conj-card">
+          <p class="sa-inst-kicker">Miss distance / with uncertainty</p>
+          <div class="sa-conj-row">
+            <span class="sa-watch">WATCH</span>
+            <strong>IRIDIUM 33 DEB x FENGYUN 1C DEB</strong>
+            <em>10.26 +/- 9.89 km</em>
+          </div>
+          <div class="sa-conj-row">
+            <span class="sa-watch">WATCH</span>
+            <strong>IRIDIUM 33 DEB x COSMOS 2251 DEB</strong>
+            <em>18.49 +/- 4.30 km</em>
+          </div>
+          <figcaption><span>03</span> Conjunctions</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-inst sa-fixture-card sa-tile--wide">
+          <p class="sa-inst-kicker">Snapshot / not SSA official</p>
+          <div class="sa-fix-stack">
+            <p class="sa-fix-banner">API OFFLINE</p>
+            <p class="sa-fix-read">BUNDLED 449</p>
+            <p class="sa-fix-read">NOT SSA OFFICIAL</p>
+          </div>
+          <figcaption><span>04</span> Fixture</figcaption>
+        </figure>
+      </div>
+
+      <p class="sa-scroll-note" aria-hidden="true">Scroll to inspect</p>
+    </div>
+  </section>
+
+  <section id="ai" class="deck deck--ai" data-deck aria-labelledby="ai-project-title">
+    <div class="sa-project-sticky">
+      <div class="sa-project-info">
+        <p class="sa-project-index">Selected work / 05</p>
+        <h2 id="ai-project-title"><span>Harness</span><span>Stack</span></h2>
+        <p class="sa-project-summary">How I actually run agents: split work, keep a human gate, wire tools through MCP, spend tokens on the job not the theatre, and keep sensitive data off someone else's GPU when an open-weight model will do.</p>
+
+        <div class="sa-project-proof" aria-label="Project outcomes">
+          <p><strong>MCP</strong><span>Human gate</span></p>
+          <p><strong>Offline</strong><span>Open-weight option</span></p>
+        </div>
+
+        <dl class="sa-project-meta">
+          <div class="sa-meta-row sa-meta-row--client"><dt>Mode</dt><dd>Operator stack / no product URL</dd></div>
+          <div class="sa-meta-row sa-meta-row--role"><dt>Role</dt><dd>Operator / prompt / systems</dd></div>
+          <div class="sa-meta-row sa-meta-row--stack">
+            <dt>Stack</dt>
+            <dd><span>SuperGrok</span><span>Hermes</span><span>Kimi</span><span>MCP</span></dd>
+          </div>
+        </dl>
+
+        <a class="sa-project-link" href="https://joe-haylock-portfolio.pages.dev/" target="_blank" rel="noreferrer">
+          View the portfolio
+          <span class="sa-link-arrow" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="sa-media-wall" aria-label="Harness stack cards">
+        <article class="sa-tile sa-title-card">
+          <p>Operator stack</p>
+          <div>
+            <p>No product URL</p>
+            <strong>HARNESS</strong>
+            <span>SuperGrok / Hermes / Kimi / MCP</span>
+          </div>
+        </article>
+
+        <figure class="sa-tile sa-inst sa-patch-card">
+          <p class="sa-inst-kicker">Patchbay / MCP</p>
+          <div class="sa-bay" aria-hidden="true">
+            <div class="sa-port"><i class="sa-jack"></i><b>TOOLS</b></div>
+            <span class="sa-lead"></span>
+            <div class="sa-port"><i class="sa-jack"></i><b>GATE</b></div>
+            <span class="sa-lead"></span>
+            <div class="sa-port"><i class="sa-jack"></i><b>HUMAN</b></div>
+          </div>
+          <p class="sa-bay-note">SuperGrok / Hermes / Kimi / MCP</p>
+          <figcaption>Patch</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-inst sa-meter-card">
+          <p class="sa-inst-kicker">Tokens</p>
+          <p class="sa-meter-label">SPEND ON THE JOB</p>
+          <div class="sa-meter" role="img" aria-label="One chat spend"><span></span></div>
+          <p class="sa-meter-read">ONE CHAT</p>
+          <figcaption>Spend</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-inst sa-plate-card">
+          <p class="sa-inst-kicker">Privacy</p>
+          <div class="sa-plate">
+            <p>STAMPED</p>
+            <strong>OPEN-WEIGHT</strong>
+            <strong>AIR-GAP</strong>
+          </div>
+          <figcaption>Plate</figcaption>
+        </figure>
+
+        <figure class="sa-tile sa-inst sa-switch-card sa-tile--wide">
+          <p class="sa-inst-kicker">Human gate</p>
+          <div class="sa-rocker-wrap" aria-hidden="true">
+            <span>Confirm</span>
+            <div class="sa-rocker"><i></i></div>
+            <span>Override</span>
+          </div>
+          <figcaption>Gate</figcaption>
+        </figure>
+      </div>
+
+      <p class="sa-scroll-note" aria-hidden="true">Scroll to inspect</p>
+    </div>
+  </section>
+
+  <footer class="page-foot">
+    <p>Demo notes / ASCII / five stacked decks</p>
+    <p>
+      <a href="https://joehaylock.github.io/sentinel-armory/">Live Armory</a>
+      /
+      <a href="https://joehaylock.github.io/sentinel-armory/lab/">Armory lab</a>
+      /
+      <a href="https://github.com/JoeHaylock/lab">This panel</a>
+    </p>
+  </footer>
+
+  <div class="hub-flash" id="hub-flash" aria-hidden="true"></div>
+
+  <script>
+    function clamp(value, minimum, maximum) {
+      return Math.min(Math.max(value, minimum), maximum);
+    }
+
+    function scrollProgress(sectionTop, sectionHeight, viewportHeight) {
+      const scrollableDistance = Math.max(sectionHeight - viewportHeight, 1);
+      return clamp(-sectionTop / scrollableDistance, 0, 1);
+    }
+
+    const decks = document.querySelectorAll('[data-deck]');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const flashEl = document.getElementById('hub-flash');
+    let frame = 0;
+    let flashing = false;
+
+    const render = () => {
+      frame = 0;
+      decks.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const progress = reducedMotion.matches
+          ? 0.45
+          : scrollProgress(rect.top, rect.height, window.innerHeight);
+        const reveal = 1;
+
+        section.style.setProperty('--ma-progress', progress.toFixed(4));
+        section.style.setProperty('--wall-x', `${(5 - progress * 6).toFixed(2)}%`);
+        section.style.setProperty('--wall-y', `${(-43 - progress * 14).toFixed(2)}%`);
+        section.style.setProperty('--ma-reveal', reveal.toFixed(4));
+      });
+    };
+
+    const requestRender = () => {
+      if (!frame) frame = window.requestAnimationFrame(render);
+    };
+
+    const jumpTo = (section) => {
+      const prev = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      section.scrollIntoView({ behavior: 'auto', block: 'start' });
+      document.documentElement.style.scrollBehavior = prev;
+      requestRender();
+    };
+
+    const openDeck = (section, color) => {
+      if (reducedMotion.matches) {
+        jumpTo(section);
+        return;
+      }
+      if (flashing) return;
+      flashing = true;
+      const t0 = performance.now();
+      flashEl.style.transition = 'none';
+      flashEl.style.background = color;
+      flashEl.style.opacity = '1';
+      let stage = 0;
+
+      const tick = (now) => {
+        if (stage === 0) {
+          flashEl.style.background = '#ffffff';
+          stage = 1;
+          window.requestAnimationFrame(tick);
+          return;
+        }
+        if (stage === 1) {
+          flashEl.style.background = color;
+          jumpTo(section);
+          stage = 2;
+          window.requestAnimationFrame(tick);
+          return;
+        }
+        const elapsed = now - t0;
+        const fade = 320;
+        const k = clamp((elapsed - 48) / fade, 0, 1);
+        flashEl.style.opacity = String(1 - k);
+        if (k < 1 && elapsed < 420) {
+          window.requestAnimationFrame(tick);
+          return;
+        }
+        flashEl.style.opacity = '0';
+        flashing = false;
+      };
+
+      window.requestAnimationFrame(tick);
+    };
+
+    document.querySelectorAll('.hub-card').forEach((card) => {
+      card.addEventListener('click', (event) => {
+        const href = card.getAttribute('href');
+        if (!href || href.charAt(0) !== '#') return;
+        const section = document.querySelector(href);
+        if (!section) return;
+        event.preventDefault();
+        const color = card.getAttribute('data-flash') || '#c96a33';
+        if (history.replaceState) history.replaceState(null, '', href);
+        openDeck(section, color);
+      });
+    });
+
+    const params = new URLSearchParams(location.search);
+    const shotId = params.get('shot') || (location.hash ? location.hash.slice(1) : '');
+    if (shotId) {
+      const landed = document.getElementById(shotId);
+      if (landed) {
+        if (params.get('shot')) {
+          const bar = document.querySelector('.page-bar');
+          const hub = document.querySelector('.hub');
+          const foot = document.querySelector('.page-foot');
+          if (bar) bar.hidden = true;
+          if (hub) hub.hidden = true;
+          if (foot) foot.hidden = true;
+          document.querySelectorAll('[data-deck]').forEach((d) => {
+            if (d !== landed) d.hidden = true;
+          });
+          landed.style.height = '100svh';
+          const pin = landed.querySelector('.sa-project-sticky');
+          if (pin) pin.style.position = 'relative';
+          window.scrollTo(0, 0);
+        } else {
+          jumpTo(landed);
+        }
+      }
+    }
+    const dy = Number(params.get('dy') || 0);
+    if (dy) window.scrollBy(0, dy);
+
+    render();
+    window.addEventListener('scroll', requestRender, { passive: true });
+    window.addEventListener('resize', requestRender);
+    reducedMotion.addEventListener('change', requestRender);
+  </script>
+</body>
+</html>

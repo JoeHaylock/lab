@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="Harness mark: tools through MCP, human gate">
+  <rect width="320" height="200" fill="#0e0d0b"/>
+  <g fill="none" stroke="#e8e4d8" stroke-width="1.6">
+    <rect x="22" y="78" width="34" height="26"/>
+    <rect x="64" y="78" width="34" height="26"/>
+    <rect x="106" y="78" width="34" height="26"/>
+    <path d="M140 91h28"/>
+    <rect x="168" y="62" width="52" height="58"/>
+    <path d="M178 78h32M178 104h32"/>
+    <path d="M220 91h28"/>
+    <circle cx="270" cy="74" r="11"/>
+    <path d="M270 85v28M258 104h24M259 113c0 14 22 14 22 0"/>
+  </g>
+  <g fill="#e8e4d8" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="9" font-weight="700" letter-spacing="1.4">
+    <text x="22" y="48">TOOLS</text>
+    <text x="168" y="48">GATE</text>
+    <text x="248" y="48">HUMAN</text>
+    <text x="28" y="95">WS</text>
+    <text x="68" y="95">365</text>
+    <text x="112" y="95">GH</text>
+  </g>
+  <text x="22" y="172" fill="#c7a862" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="10" font-weight="700" letter-spacing="2.4">MCP / CONFIRM / OVERRIDE</text>
+</svg>
