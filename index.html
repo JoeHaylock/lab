@@ -817,8 +817,14 @@
     .sa-tile--console img { object-position: 52% 42%; }
     .sa-tile--iss img { object-position: 72% 38%; }
     .sa-tile--night img { object-position: 42% 78%; }
+    .sa-tile--well img { object-position: 50% 48%; }
     .sa-tile--drawer img { object-position: 78% 18%; }
     .sa-tile--bench img { object-position: 46% 40%; }
+    .sa-tile--grade img { object-position: 50% 42%; }
+    .sa-tile--tgate img { object-position: 50% 88%; }
+    .sa-tile--patch img { object-position: 40% 45%; }
+    .sa-tile--plate img { object-position: 50% 45%; }
+    .sa-tile--hgate img { object-position: 50% 50%; }
 
     .hub-flash {
       position: fixed;
@@ -1427,27 +1433,13 @@
           <figcaption><span>01</span> Completed run</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-inst sa-grade-card">
-          <p class="sa-inst-kicker">Source grading / Admiralty</p>
-          <ol class="sa-grade-list">
-            <li><span class="sid">S1</span><span class="src">REGISTRY</span><span class="chip chip-a2">A2</span></li>
-            <li><span class="sid">S2</span><span class="src">CRT.SH</span><span class="chip chip-a2">A2</span></li>
-            <li><span class="sid">S3</span><span class="src">PASSIVE DNS</span><span class="chip chip-b2">B2</span></li>
-            <li><span class="sid">S4</span><span class="src">REPUTATION</span><span class="chip chip-b3">B3</span></li>
-            <li><span class="sid">S5</span><span class="src">WEB SEARCH</span><span class="chip chip-c3">C3</span></li>
-            <li><span class="sid">S6</span><span class="src">STRING</span><span class="chip chip-a2">A2</span></li>
-          </ol>
+        <figure class="sa-tile sa-tile--grade">
+          <img src="assets/trace/grade.png" alt="TRACE source grading from a real canned run: S1 to S6 with Admiralty chips" loading="lazy" decoding="async" />
           <figcaption><span>02</span> Grade</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-inst sa-gate-card">
-          <p class="sa-inst-kicker">Analyst decision required</p>
-          <p class="sa-stamp">AI NEVER DECIDES</p>
-          <div class="sa-btns" aria-hidden="true">
-            <span class="sa-btn sa-btn--ok">ACCEPT</span>
-            <span class="sa-btn sa-btn--edit">EDIT</span>
-            <span class="sa-btn sa-btn--no">REJECT</span>
-          </div>
+        <figure class="sa-tile sa-tile--tgate">
+          <img src="assets/trace/gate.png" alt="TRACE right rail from the live demo: verdict, 72 of 100, ACCEPT EDIT REJECT" loading="lazy" decoding="async" />
           <figcaption><span>03</span> Human gate</figcaption>
         </figure>
       </div>
@@ -1582,19 +1574,14 @@
           <figcaption><span>02</span> ISS / stale TLE</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-tile--night sa-tile--wide">
+        <figure class="sa-tile sa-tile--night">
           <img src="assets/orbit/night.png" alt="Night-side Earth from orbit, sparse satellites, no HUD" loading="lazy" decoding="async" />
           <figcaption><span>03</span> Night side</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-inst sa-fixture-card">
-          <p class="sa-inst-kicker">Snapshot / not SSA official</p>
-          <div class="sa-fix-stack">
-            <p class="sa-fix-banner">API OFFLINE</p>
-            <p class="sa-fix-read">5 TLE FIXTURE</p>
-            <p class="sa-fix-read">AGE 1449 H</p>
-          </div>
-          <figcaption><span>04</span> Fixture</figcaption>
+        <figure class="sa-tile sa-tile--well">
+          <img src="assets/orbit/well.png" alt="Cinematic black-hole accretion still, no HUD" loading="lazy" decoding="async" />
+          <figcaption><span>04</span> Gravity well</figcaption>
         </figure>
       </div>
 
@@ -1644,37 +1631,19 @@
           <figcaption><span>01</span> Bench</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-inst sa-patch-card">
-          <p class="sa-inst-kicker">Patchbay / MCP</p>
-          <div class="sa-bay" aria-hidden="true">
-            <div class="sa-port"><i class="sa-jack"></i><b>TOOLS</b></div>
-            <span class="sa-lead"></span>
-            <div class="sa-port"><i class="sa-jack"></i><b>GATE</b></div>
-            <span class="sa-lead"></span>
-            <div class="sa-port"><i class="sa-jack"></i><b>HUMAN</b></div>
-          </div>
-          <p class="sa-bay-note">SuperGrok / Hermes / Kimi / MCP</p>
-          <figcaption>Patch</figcaption>
+        <figure class="sa-tile sa-tile--patch">
+          <img src="assets/harness/patch.png" alt="Analog patchbay close-up, brass cables in a dark rack" loading="lazy" decoding="async" />
+          <figcaption><span>02</span> Patchbay</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-inst sa-plate-card">
-          <p class="sa-inst-kicker">Privacy</p>
-          <div class="sa-plate">
-            <p>STAMPED</p>
-            <strong>OPEN-WEIGHT</strong>
-            <strong>AIR-GAP</strong>
-          </div>
-          <figcaption>Plate</figcaption>
+        <figure class="sa-tile sa-tile--plate">
+          <img src="assets/harness/plate.png" alt="Faraday mesh cabinet and blank stamped plate" loading="lazy" decoding="async" />
+          <figcaption><span>03</span> Air-gap</figcaption>
         </figure>
 
-        <figure class="sa-tile sa-inst sa-switch-card sa-tile--wide">
-          <p class="sa-inst-kicker">Human gate</p>
-          <div class="sa-rocker-wrap" aria-hidden="true">
-            <span>Confirm</span>
-            <div class="sa-rocker"><i></i></div>
-            <span>Override</span>
-          </div>
-          <figcaption>Gate</figcaption>
+        <figure class="sa-tile sa-tile--hgate">
+          <img src="assets/harness/gate.png" alt="Industrial confirm / override rocker on a black panel" loading="lazy" decoding="async" />
+          <figcaption><span>04</span> Human gate</figcaption>
         </figure>
       </div>
 
